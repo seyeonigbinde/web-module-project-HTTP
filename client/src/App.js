@@ -5,7 +5,7 @@ import MovieList from './components/MovieList';
 import Movie from './components/Movie';
 
 import MovieHeader from './components/MovieHeader';
-
+import DeleteMovieModal from './components/DeleteMovieModal';
 import EditMovieForm from './components/EditMovieForm';
 import FavoriteMovieList from './components/FavoriteMovieList';
 import AddMovieForm from './components/AddMovieForm';
@@ -27,7 +27,7 @@ const App = (props) => {
   }, []);
 
   const deleteMovie = (id)=> {
-
+    setMovies(movies.filter(movie => (movie.id !== Number(id))))
   }
 
   const addToFavorites = (movie) => {
@@ -46,20 +46,23 @@ const App = (props) => {
           <FavoriteMovieList favoriteMovies={favoriteMovies}/>
         
           <Switch>
-            <Route path="/movies/edit/:id">
-            <EditMovieForm/> 
+          <Route path="/movies/edit/:id" >
+              <EditMovieForm setMovie={setMovies} />
             </Route>
 
-            <Route path="/movies/add/:id">
-            <AddMovieForm/> 
+            <Route path='/movies/delete/:id'>
+              <DeleteMovieModal {...props} deleteMovie={deleteMovie} />
             </Route>
 
+            <Route path='/movies/add'>
+              <AddMovieForm setMovie={setMovies}/>
+              </Route>
             <Route path="/movies/:id">
               <Movie/>
             </Route>
 
             <Route path="/movies">
-              <MovieList movies={movies}/>
+              <MovieList {...props} movies={movies}/>
             </Route>
 
             <Route path="/">
